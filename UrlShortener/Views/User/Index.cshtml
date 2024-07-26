@@ -1,0 +1,118 @@
+﻿<div class="container">
+    <h2 class="mt-5" id="formTitle">Login</h2>
+    <form id="loginForm" >
+        <div class="mb-3">
+            <label for="txtEmailLog" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="txtEmailLog" required>
+        </div>
+        <div class="mb-3">
+            <label for="txtPasswordLog" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="txtPasswordLog" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnLogin">Login</button>
+        <p class="mt-3">¿No tienes una cuenta? <a href="#" id="showRegister">Regístrate aquí</a></p>
+    </form>
+    <form id="registerForm" style="display: none;">
+        <div class="mb-3">
+            <label for="txtUsername" class="form-label">Nombre de usuario</label>
+            <input type="text" class="form-control" id="txtUserNameReg" required>
+        </div>
+        <div class="mb-3">
+            <label for="txtEmail" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="txtEmailReg" required>
+        </div>
+        <div class="mb-3">
+            <label for="txtPassword" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="txtPasswordReg" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnRegister">Registrarse</button>
+        <p class="mt-3">¿Ya tienes una cuenta? <a href="#" id="showLogin">Inicia sesión aquí</a></p>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        changesForm();
+        const loginForm = document.querySelector('#loginForm');
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            login();
+        });
+        const registerForm = document.querySelector('#registerForm');
+        registerForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            register();
+        });
+    });
+    const register = () => {
+        const userName = document.querySelector('#txtUserNameReg').value;
+        const email = document.querySelector('#txtEmailReg').value;
+        const password = document.querySelector('#txtPasswordReg').value;
+        const user = {
+            userName: userName,
+            email: email,
+            password: password
+        };
+        const url = 'User/Register';
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            }
+        }).then(response => response.json())
+            .then(result => {
+                showLogin();
+            })
+            .catch(error => {
+                console.log(`Error: ${error.message}`);
+            });
+    };
+
+    const login = () => {
+        const email = document.querySelector('#txtEmailLog').value;
+        const password = document.querySelector('#txtPasswordLog').value;
+        const user = {
+            email: email,
+            password: password
+        };
+        const url = 'User/Login';
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            }
+        }).then(response => response.json())
+        .then(result => {
+            window.location.href = '/Url/Index';
+        })
+            .catch(error => {
+                console.log(`Error: ${error.message}`);
+            });
+    };
+    
+    const changesForm = () => {
+        document.querySelector('#showLogin').addEventListener('click', (event) => {
+            event.preventDefault();
+            showLogin();
+        });
+        document.querySelector('#showRegister').addEventListener('click', (event) => {
+            event.preventDefault();
+            showRegister();
+        });
+    };
+    const showLogin = () => {
+        document.querySelector('#registerForm').style.display = 'none';
+        document.querySelector('#loginForm').style.display = 'block';
+        document.querySelector('#formTitle').textContent = 'Login';
+    };
+    const showRegister = () => {
+        document.querySelector('#loginForm').style.display = 'none';
+        document.querySelector('#registerForm').style.display = 'block';
+        document.querySelector('#formTitle').textContent = 'Register';
+    }
+
+</script>

@@ -1,0 +1,67 @@
+﻿<form id="shortenForm">
+    <div class="col-sm-10">
+        <label for="urlOriginal" class="form-label">Url</label>
+        <input type="text" class="form-control" id="urlOriginal">
+    </div>
+    <button type="submit" id="btnShorten" class="btn btn-primary">Shorten</button>
+</form>
+
+<div id="newUrl"></div>
+<div id="errorMessage" class="text-danger"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const shortenForm = document.querySelector('#shortenForm');
+        shortenForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            shorten();
+        });
+    });
+
+    const shorten = () => {
+        let urlOriginal = document.querySelector('#urlOriginal').value;
+        const url = '/Url/Shorten';
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({ urlOriginal }), 
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.error || 'Network response was not ok');
+                    });
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result.error) {
+                    displayErrorMessage(result.error);
+                } else {
+                    displayShortenedUrl(result.shortUrl);
+                }
+            })
+            .catch(error => {
+                displayErrorMessage('An unexpected error occurred: ' + error.message);
+            });
+    };
+
+    const displayShortenedUrl = (shortUrl) => {
+        const urlShortenedMessage = `
+                <p>Your shortened URL is:
+                    <a href="/Url/RedirectToOriginal/${shortUrl}" target="_blank">
+                                   https://urlshortenergenerator.at/${shortUrl}
+                    </a>
+                </p>`;
+        document.querySelector('#newUrl').innerHTML = urlShortenedMessage;
+    };
+    const displayErrorMessage = (message) => {
+        document.querySelector('#errorMessage').innerHTML = message;
+        document.querySelector('#newUrl').innerHTML = '';
+    };
+    
+</script>
+
+       

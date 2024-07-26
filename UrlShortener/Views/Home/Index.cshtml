@@ -1,0 +1,41 @@
+﻿<div class="container mt-3">
+    <h2>Mis Urls</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Url Original</th>
+                <th>Url Acortado</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="listUser"> </tbody>
+    </table>
+    <button type="submit" onclick="@("window.location.href='" + @Url.Action("Index", "Url") + "'");" id="btnShorten" class="btn btn-primary">Shorten</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const url = 'Home/ListUrlsUser';
+        const listUser = document.querySelector('#listUser');
+        listUser.innerHTML = '';
+        fetch(url, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+            .then(result => {
+                result.forEach(r => {
+                    const listUserTemplate =
+                        `<tr>
+                            <td><a href="${r.originalUrl}" target="_blank">${r.originalUrl}</a></td>
+                            <td><a href="/Url/RedirectToOriginal/${r.shortUrl}" target="_blank">https://urlshortenergenerator.at/${r.shortUrl}</a></td>
+                            <td>${r.state}</td>
+                        </tr>`;
+                    listUser.insertAdjacentHTML('beforeend', listUserTemplate);
+
+                });
+            })
+            .catch(error => {
+                console.log(`Error: ${error.message}`);
+            });
+    });
+</script>
