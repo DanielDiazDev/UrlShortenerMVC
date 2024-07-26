@@ -135,3 +135,4 @@ C:\Users\User\Desktop\Practica CSharp\UrlShortener\UrlShortener\bin\Debug\net8.0
 C:\Users\User\Desktop\Practica CSharp\UrlShortener\UrlShortener\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\User\Desktop\Practica CSharp\UrlShortener\UrlShortener\obj\Debug\net8.0\UrlShortener.csproj.AssemblyReference.cache
 C:\Users\User\Desktop\Practica CSharp\UrlShortener\UrlShortener\obj\Debug\net8.0\UrlShortener.csproj.CopyComplete
+C:\Users\User\Desktop\Practica CSharp\UrlShortener\UrlShortener\obj\Debug\net8.0\UrlShortener.sourcelink.json
